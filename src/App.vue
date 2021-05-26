@@ -1,32 +1,77 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    <cv-content id="main-content">
+      <div id="nav">
+        <cv-link @click="goToHomePage">Home</cv-link> |
+        <cv-link @click="goToAboutPage">About</cv-link> |
+        <cv-link @click="goToAboutPageWithToggleEnabled"
+          >About with toggle enabled</cv-link
+        >
+      </div>
+      <router-view />
+    </cv-content>
   </div>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import QueryParamService from "@/mixins/queryParam";
 
-#nav {
-  padding: 30px;
-}
+export default {
+  name: "App",
+  mixins: [QueryParamService],
+  data() {
+    return {
+      urlPrefix: "#/apps/ns8-app",
+    };
+  },
+  mounted() {
+    console.log("ns8 app mounted"); ////
+    // this.urlCheckInterval = this.initUrlBinding(this.q.page);
+    const queryParams = this.getQueryParams();
+    console.log("   queryParams", queryParams); ////
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
+    const requestedPage = queryParams.page;
 
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
+    console.log(
+      "requested page, this.$route.path",
+      requestedPage,
+      this.$route.path
+    ); ////
+
+    if (requestedPage) {
+      if (this.$route.path !== "/" + requestedPage) {
+        this.$router.replace(requestedPage);
+      }
+    }
+  },
+  methods: {
+    goToHomePage() {
+      window.parent.location.hash = this.urlPrefix + "?page=home";
+
+      if (this.$route.name !== "Home") {
+        this.$router.push("/");
+      }
+    },
+    goToAboutPageWithToggleEnabled() {
+      window.parent.location.hash =
+        this.urlPrefix + "?page=about&testToggle=true";
+
+      if (this.$route.name !== "About") {
+        this.$router.push("about");
+      }
+    },
+    goToAboutPage() {
+      window.parent.location.hash = this.urlPrefix + "?page=about";
+
+      if (this.$route.name !== "About") {
+        this.$router.push("about");
+      }
+    },
+  },
+};
+</script>
+
+<style lang="scss">
+//// DO NOT IMPORT CARBON STYLES, THEY OVERRIDE NS8 CORE THEME
+// @import "./styles/carbon";
 </style>

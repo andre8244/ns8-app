@@ -9,7 +9,12 @@
     "watch": "vue-cli-service build --watch"
   },
   "dependencies": {
+    "@carbon/icons-vue": "^10.32.0",
+    "@carbon/vue": "^2.38.0",
+    "carbon-components": "^10.35.0",
     "core-js": "^3.6.5",
+    "node-sass": "^4.14.1",
+    "sass-loader": "^10.1.1",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0"
   },
