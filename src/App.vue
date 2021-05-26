@@ -26,22 +26,24 @@ export default {
   },
   mounted() {
     console.log("ns8 app mounted"); ////
-    // this.urlCheckInterval = this.initUrlBinding(this.q.page);
-    const queryParams = this.getQueryParams();
-    console.log("   queryParams", queryParams); ////
 
+    // listen to change route events
+    const context = this;
+    window.addEventListener(
+      "changeRoute",
+      function(e) {
+        const requestedPage = e.detail;
+        context.$router.push(requestedPage);
+      },
+      false
+    );
+
+    const queryParams = this.getQueryParams();
     const requestedPage = queryParams.page;
 
-    console.log(
-      "requested page, this.$route.path",
-      requestedPage,
-      this.$route.path
-    ); ////
-
-    if (requestedPage) {
-      if (this.$route.path !== "/" + requestedPage) {
-        this.$router.replace(requestedPage);
-      }
+    if (requestedPage != "home") {
+      console.log("replacing", this.$route.path, requestedPage); ////
+      this.$router.replace(requestedPage);
     }
   },
   methods: {

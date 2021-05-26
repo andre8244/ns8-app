@@ -4,20 +4,20 @@ export default {
     initUrlBinding(page) {
       console.log("initUrlBinding, page", page); ////
 
-      this.watchData();
-      this.syncQueryParamsAndData(page);
-      // this.checkUrlChange(window.parent.location.href); ////
-      return setInterval(this.checkUrlChange, 1000);
-    },
-    syncQueryParamsAndData(page) {
-      //// remove page parameter?
-      // let queryParams = this.getQueryParams(); ////
+      let queryParams = this.getQueryParams();
+      const requestedPage = queryParams.page || "home";
 
-      // check if route has changed
-      // if (page === queryParams.page || typeof queryParams.page == "undefined") { ////
-      //// is this if needed?
+      if (requestedPage != page) {
+        console.log("page mismatch, return", requestedPage, page); ////
+        return;
+      }
+
+      this.watchData();
+      this.syncQueryParamsAndData();
+      return setInterval(() => this.checkUrlChange(page), 1000); //// use 500?
+    },
+    syncQueryParamsAndData() {
       this.queryParamsToData();
-      // }
       this.dataToQueryParams();
     },
     watchData() {
@@ -28,21 +28,29 @@ export default {
         });
       });
     },
-    checkUrlChange() {
+    checkUrlChange(page) {
+      console.log("checkUrlChange, page", page); ////
       const newUrl = window.parent.location.href;
 
       if (newUrl != this.currentUrl) {
         console.log("url changed"); ////
         this.currentUrl = newUrl;
-        let queryParams = this.getQueryParams();
-        this.syncQueryParamsAndData(queryParams.page);
+        const queryParams = this.getQueryParams();
+        const requestedPage = queryParams.page || "home";
+
+        if (requestedPage !== page) {
+          // page has changed, need to change route
+          console.log("detected page change, dispatch event", requestedPage); ////
+
+          // trigger a custom event to change app route
+          window.dispatchEvent(
+            new CustomEvent("changeRoute", { detail: requestedPage })
+          );
+        } else {
+          this.syncQueryParamsAndData();
+        }
       }
-
       this.currentUrl = window.parent.location.href;
-
-      // setTimeout(() => { ////
-      //   this.checkUrlChange(window.parent.location.href);
-      // }, 1000);
     },
     queryParamsToData() {
       let queryParams = this.getQueryParams();
@@ -77,7 +85,7 @@ export default {
 
       const baseUrl = window.parent.location.hash.split("?").shift();
       const urlWithParams = baseUrl + "?" + queryParams.join("&");
-      window.parent.history.replaceState(null, "", urlWithParams); //// use pushState if route has changed
+      window.parent.history.replaceState(null, "", urlWithParams);
     },
     getQueryParams() {
       if (

@@ -42,15 +42,13 @@ export default {
   },
   mixins: [QueryParamService],
   beforeRouteEnter(to, from, next) {
-    console.log("home beforeRouteEnter"); ////
+    console.log(
+      "home beforeRouteEnter, parent url",
+      window.parent.location.href
+    ); ////
     next((vm) => {
-      vm.urlCheckInterval = vm.initUrlBinding(vm.q.page);
+      vm.urlCheckInterval = vm.initUrlBinding(vm.q.page); ////
     });
-  },
-  //// remove
-  mounted() {
-    console.log("home mounted, route", this.$route); ////
-    // this.urlCheckInterval = this.initUrlBinding(this.q.page); ////
   },
   beforeRouteLeave(to, from, next) {
     console.log(
@@ -60,9 +58,5 @@ export default {
     clearInterval(this.urlCheckInterval);
     next();
   },
-  // beforeUnmount() { ////
-  //   console.log("home unmounting, clear urlCheckInterval", urlCheckInterval); ////
-  //   clearInterval(urlCheckInterval);
-  // },
 };
 </script>

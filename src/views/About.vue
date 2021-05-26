@@ -38,11 +38,6 @@ export default {
     };
   },
   mixins: [QueryParamService],
-  //// remove
-  mounted() {
-    console.log("about mounted, route", this.$route); ////
-    // this.urlCheckInterval = this.initUrlBinding(this.q.page); ////
-  },
   beforeRouteEnter(to, from, next) {
     console.log("about beforeRouteEnter"); ////
     next((vm) => {
