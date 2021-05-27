@@ -14,17 +14,16 @@
 </template>
 
 <script>
-import QueryParamService from "@/mixins/queryParam";
+let nethserver = window.nethserver;
 
 export default {
   name: "App",
-  mixins: [QueryParamService],
   data() {
     return {
       urlPrefix: "#/apps/ns8-app",
     };
   },
-  mounted() {
+  created() {
     console.log("ns8 app mounted"); ////
 
     // listen to change route events
@@ -38,8 +37,8 @@ export default {
       false
     );
 
-    const queryParams = this.getQueryParams();
-    const requestedPage = queryParams.page;
+    const queryParams = nethserver.getQueryParams();
+    const requestedPage = queryParams.page || "home";
 
     if (requestedPage != "home") {
       console.log("replacing", this.$route.path, requestedPage); ////

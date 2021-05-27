@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import QueryParamService from "@/mixins/queryParam";
+let nethserver = window.nethserver;
 
 export default {
   name: "About",
@@ -37,11 +37,10 @@ export default {
       currentUrl: "",
     };
   },
-  mixins: [QueryParamService],
   beforeRouteEnter(to, from, next) {
     console.log("about beforeRouteEnter"); ////
     next((vm) => {
-      vm.urlCheckInterval = vm.initUrlBinding(vm.q.page);
+      vm.urlCheckInterval = nethserver.initUrlBinding(vm, vm.q.page);
     });
   },
   beforeRouteLeave(to, from, next) {

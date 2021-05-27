@@ -1,5 +1,5 @@
 <template>
-  <div class="bx--grid bx--grid--full-width">
+  <div v-show="isRedirectChecked" class="bx--grid bx--grid--full-width">
     <div class="bx--row">
       <div class="bx--col-lg-16">
         <h1 class="page-title">NS8 Test App</h1>
@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import QueryParamService from "@/mixins/queryParam";
+let nethserver = window.nethserver;
 
 export default {
   name: "Home",
@@ -38,16 +38,17 @@ export default {
       },
       currentUrl: "",
       urlCheckInterval: null,
+      isRedirectChecked: false,
+      redirectTimeout: 0,
     };
   },
-  mixins: [QueryParamService],
   beforeRouteEnter(to, from, next) {
     console.log(
       "home beforeRouteEnter, parent url",
       window.parent.location.href
     ); ////
     next((vm) => {
-      vm.urlCheckInterval = vm.initUrlBinding(vm.q.page); ////
+      vm.urlCheckInterval = nethserver.initUrlBinding(vm, vm.q.page); ////
     });
   },
   beforeRouteLeave(to, from, next) {
@@ -57,6 +58,17 @@ export default {
     ); ////
     clearInterval(this.urlCheckInterval);
     next();
+  },
+  mounted() {
+    // show home page after a little delay to avoid page flickering when user directly access a page different from home
+    this.redirectTimeout = setTimeout(
+      () => (this.isRedirectChecked = true),
+      200
+    );
+  },
+  beforeUnmount() {
+    clearTimeout(this.redirectTimeout);
+    console.log("timeout cleared"); ////
   },
 };
 </script>
