@@ -47,22 +47,33 @@ export default {
   },
   methods: {
     goToHomePage() {
-      window.parent.location.hash = this.urlPrefix + "?page=home";
+      window.parent.history.replaceState(
+        null,
+        "",
+        this.urlPrefix + "?page=home"
+      );
 
       if (this.$route.name !== "Home") {
         this.$router.push("/");
       }
     },
     goToAboutPageWithToggleEnabled() {
-      window.parent.location.hash =
-        this.urlPrefix + "?page=about&testToggle=true";
+      window.parent.history.replaceState(
+        null,
+        "",
+        this.urlPrefix + "?page=about&testToggle=true"
+      );
 
       if (this.$route.name !== "About") {
         this.$router.push("about");
       }
     },
     goToAboutPage() {
-      window.parent.location.hash = this.urlPrefix + "?page=about";
+      window.parent.history.replaceState(
+        null,
+        "",
+        this.urlPrefix + "?page=about"
+      );
 
       if (this.$route.name !== "About") {
         this.$router.push("about");
