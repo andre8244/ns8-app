@@ -39,7 +39,7 @@ export default {
       false
     );
 
-    const queryParams = nethserver.getQueryParams();
+    const queryParams = nethserver.getQueryParamsForApp();
     const requestedPage = queryParams.page || "home";
 
     if (requestedPage != "home") {

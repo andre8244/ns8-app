@@ -48,6 +48,7 @@ export default {
       window.parent.location.href
     ); ////
     next((vm) => {
+      nethserver.watchQueryData(vm);
       vm.urlCheckInterval = nethserver.initUrlBinding(vm, vm.q.page); ////
     });
   },

@@ -40,6 +40,7 @@ export default {
   beforeRouteEnter(to, from, next) {
     console.log("about beforeRouteEnter"); ////
     next((vm) => {
+      nethserver.watchQueryData(vm);
       vm.urlCheckInterval = nethserver.initUrlBinding(vm, vm.q.page);
     });
   },
