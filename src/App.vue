@@ -7,6 +7,7 @@
         <cv-link @click="goToAboutPageWithToggleEnabled"
           >About with toggle enabled</cv-link
         >
+        | <cv-link @click="goToCoreDashboard">Core dashboard</cv-link> |
       </div>
       <router-view />
     </cv-content>
@@ -78,6 +79,13 @@ export default {
       if (this.$route.name !== "About") {
         this.$router.push("about");
       }
+    },
+    goToCoreDashboard() {
+      // link to NS8 core
+
+      window.parent.ns8.$router.push(
+        "/dashboard?testInput=abczzz&testToggle=true"
+      );
     },
   },
 };
