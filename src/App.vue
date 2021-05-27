@@ -33,7 +33,8 @@ export default {
       "changeRoute",
       function(e) {
         const requestedPage = e.detail;
-        context.$router.push(requestedPage);
+        // context.$router.push(requestedPage); ////
+        context.$router.replace(requestedPage);
       },
       false
     );
@@ -48,40 +49,66 @@ export default {
   },
   methods: {
     goToHomePage() {
-      window.parent.history.replaceState(
-        null,
-        "",
-        this.urlPrefix + "?page=home"
-      );
+      // window.parent.history.replaceState(
+      //   null,
+      //   "",
+      //   this.urlPrefix + "?page=home"
+      // );
 
-      if (this.$route.name !== "Home") {
-        this.$router.push("/");
+      const path = "/apps/ns8-app?page=home";
+
+      if (window.parent.ns8.$route.fullPath != path) {
+        window.parent.ns8.$router.push(path);
       }
+
+      // if (this.$route.name !== "Home") { ////
+      //   this.$router.push("/");
+      // }
     },
     goToAboutPageWithToggleEnabled() {
-      window.parent.history.replaceState(
-        null,
-        "",
-        this.urlPrefix + "?page=about&testToggle=true"
-      );
+      // window.parent.history.replaceState( ////
+      //   null,
+      //   "",
+      //   this.urlPrefix + "?page=about&testToggle=true"
+      // );
 
-      if (this.$route.name !== "About") {
-        this.$router.push("about");
+      // if (this.$route.name !== "About") {
+      //   this.$router.push("about");
+      // }
+
+      const path = "/apps/ns8-app?page=about&testToggle=true";
+
+      if (window.parent.ns8.$route.fullPath != path) {
+        window.parent.ns8.$router.push(path);
       }
     },
     goToAboutPage() {
-      window.parent.history.replaceState(
-        null,
-        "",
-        this.urlPrefix + "?page=about"
-      );
+      // window.parent.history.replaceState( ////
+      //   null,
+      //   "",
+      //   this.urlPrefix + "?page=about"
+      // );
 
-      if (this.$route.name !== "About") {
-        this.$router.push("about");
+      const path = "/apps/ns8-app?page=about";
+
+      if (window.parent.ns8.$route.fullPath != path) {
+        window.parent.ns8.$router.push(path);
       }
+
+      // if (this.$route.name !== "About") { ////
+      //   this.$router.push("about");
+      // }
     },
     goToCoreDashboard() {
       // link to NS8 core
+
+      // window.parent.history.pushState(
+      //   null,
+      //   "",
+      //   "#/dashboard?testInput=abczzz&testToggle=true"
+      // );
+
+      // window.parent.location.reload();
 
       window.parent.ns8.$router.push(
         "/dashboard?testInput=abczzz&testToggle=true"
